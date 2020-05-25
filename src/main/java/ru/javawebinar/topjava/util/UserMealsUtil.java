@@ -26,10 +26,10 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410)
         );
 
-        List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(13, 1), 2000);
+        List<UserMealWithExcess> mealsTo = filteredByCycles(meals, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
         mealsTo.forEach(System.out::println);
-        System.out.println("---------------------");
-        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(13, 1), 2000));
+
+//        System.out.println(filteredByStreams(meals, LocalTime.of(7, 0), LocalTime.of(13, 1), 2000));
     }
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
@@ -44,7 +44,6 @@ public class UserMealsUtil {
                 map.put(date, meal.getCalories());
         }
          for (UserMeal meal : meals) {
-
             LocalTime time = meal.getDateTime().toLocalTime();
             boolean isExcess = false;
             if (TimeUtil.isBetweenHalfOpen(time, startTime, endTime)) {
@@ -60,11 +59,9 @@ public class UserMealsUtil {
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-
         List<UserMealWithExcess>  filteredList = meals.stream().filter(UserMeal -> UserMeal.getDateTime().toLocalTime().isAfter(startTime) &&
                 UserMeal.getDateTime().toLocalTime().isBefore(endTime))
                 .map(UserMeal -> {
-
                     return new UserMealWithExcess(UserMeal.getDateTime(), UserMeal.getDescription(), UserMeal.getCalories(), false);
                 })
                 .collect(Collectors.toList());
