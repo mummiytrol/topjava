@@ -1,0 +1,13 @@
+
+p1 { font-size:14px; color: darkgreen; }
+p2 { font-size:14px; color: red; }
+table {
+    border-spacing: 0 8px;
+    background: #fff8dc;
+    text-align: center;
+    vertical-align: middle;
+    width: 30%;
+    border-collapse: collapse;
+    border: 4px ridge;
+}
+
