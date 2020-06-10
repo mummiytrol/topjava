@@ -1,55 +1,43 @@
-<%@ page import="java.util.List" %>
-<%@ page import="ru.javawebinar.topjava.model.MealTo" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
-    <link rel="stylesheet" href="res/style.css"  type="text/css"/>
+    <link href="<c:url value="/res/style.css"/>"  rel="stylesheet" type="text/css"/>
     <title>Meals</title>
 </head>
 <body>
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Meals</h2>
-<% List<MealTo> meals = (List) request.getAttribute("meals");
-%>
+
 <table>
+    <tr>
     <b>
-        <th width="120">Date</th>
-        <th width="50">Time</th>
-        <th width="260">Description</th>
-        <th width="100">Calories</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Description</th>
+        <th>Calories</th>
     </b>
     </tr>
-<%
-    for(MealTo meal : meals) {
-%>
+
+<jsp:useBean id="meals" scope="request" type="java.util.List"/>
+<c:forEach var="meal" items="${meals}">
     <tr>
-        <%
-            if (meal.isExcess()) {
-        %>
-        <p1>
-    <td> <%= meal.getDateTime().toLocalDate()%></td>
-    <td> <%= meal.getDateTime().toLocalTime()%></td>
-    <td><%= meal.getDescription()%></td>
-    <td><%= meal.getCalories()%></td>
-    <td><%= meal.isExcess()%></td>
-    </p1>
-      <%  } if (!meal.isExcess()) { %>
-
-        <p2>
-            <td> <%= meal.getDateTime().toLocalDate()%></td>
-            <td> <%= meal.getDateTime().toLocalTime()%></td>
-            <td><%= meal.getDescription()%></td>
-            <td><%= meal.getCalories()%></td>
-            <td><%= meal.isExcess()%></td>
-        </p2>
-
-        <% }
-    %>
+    <c:if test="${meal.excess}">
+            <td><p1> ${meal.getDateTime().toLocalDate()} </p1></td>
+            <td><p1> ${meal.getDateTime().toLocalTime()} </p1></td>
+            <td><p1> ${meal.getDescription()} </p1></td>
+            <td><p1> ${meal.getCalories()} </p1></td>
+    </c:if>
+        <c:if test="${!meal.excess}">
+            <td><p2> ${meal.getDateTime().toLocalDate()} </p2></td>
+            <td><p2> ${meal.getDateTime().toLocalTime()} </p2></td>
+            <td><p2> ${meal.getDescription()} </p2></td>
+            <td><p2> ${meal.getCalories()} </p2></td>
+        </c:if>
     </tr>
-<%
-    }
-%>
+</c:forEach>
 </table>
 </body>
 </html>
