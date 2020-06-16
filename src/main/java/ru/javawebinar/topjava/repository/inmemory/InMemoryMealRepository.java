@@ -13,27 +13,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class InMemoryMealRepository implements MealRepository {
-    private Map<Integer, Meal> repository;
-    private AtomicInteger counter;
-    private int userId;
+    private Map<Integer, Meal> repository = new ConcurrentHashMap<>();
+    private AtomicInteger counter= new AtomicInteger(0);
 
-//    {
-//       MealsUtil.MEALS.forEach(meal -> save(meal, userId));
-//    }
-
-    public InMemoryMealRepository(int userId) {
-        this.userId = userId;
-        this.repository = new ConcurrentHashMap<>();
-        this.counter = new AtomicInteger(0);
+    {
+       MealsUtil.MEALS.forEach(this::save);
     }
 
     @Override
-    public Meal save(Meal meal, int userId) {
-//        if (repository==null) {
-//            this.userId = userId;
-//            this.repository = new ConcurrentHashMap<>();
-//            this.counter = new AtomicInteger(0);
-//        }
+    public Meal save(Meal meal) {
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             repository.put(meal.getId(), meal);
@@ -45,21 +33,20 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
+        if (repository.get(id).getUserId()!=userId) return false;
         return repository.remove(id) != null;
     }
 
     @Override
     public Meal get(int id, int userId) {
+        if (repository.get(id).getUserId()!=userId) return null;
         return repository.get(id);
     }
 
     @Override
     public Collection<Meal> getAll(int userId) {
         Comparator<Meal> comparator = Comparator.comparing(Meal::getDate);
-        if (repository==null) {
-            repository = new ConcurrentHashMap<>();
-        }
-        return repository.values().stream().sorted(comparator.reversed()).collect(Collectors.toList());
+        return repository.values().stream().filter(meal -> meal.getUserId()==userId).sorted(comparator.reversed()).collect(Collectors.toList());
     }
 }
 
