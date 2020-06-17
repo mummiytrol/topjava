@@ -1,9 +1,15 @@
 package ru.javawebinar.topjava.model;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@SuppressWarnings("SpringJavaConstructorAutowiringInspection")
+@Component
 public class Meal extends AbstractBaseEntity{
     private final LocalDateTime dateTime;
 
@@ -13,6 +19,9 @@ public class Meal extends AbstractBaseEntity{
 
     private final int userId;
 
+    @PostConstruct
+    public void init() {
+    }
 
     public Meal(LocalDateTime dateTime, String description, int calories, int userId) {
         this(null, dateTime, description, calories, userId);

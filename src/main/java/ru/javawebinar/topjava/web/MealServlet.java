@@ -19,7 +19,7 @@ import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MealServlet.class);
-    private int userId = SecurityUtil.authUserId();
+    private final int userId = SecurityUtil.authUserId();
     private MealRepository repository;
 
     @Override
@@ -39,7 +39,7 @@ public class MealServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("calories")), userId);
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        repository.save(meal);
+        repository.save(meal, userId);
         response.sendRedirect("meals");
     }
 

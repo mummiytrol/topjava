@@ -1,11 +1,16 @@
 package ru.javawebinar.topjava.model;
 
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
 
 import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
 
+@SuppressWarnings("SpringJavaConstructorAutowiringInspection")
+@Component
 public class User extends AbstractNamedEntity {
 
     private String email;
@@ -16,9 +21,13 @@ public class User extends AbstractNamedEntity {
 
     private Date registered = new Date();
 
-    private Set<Role> roles;
+    private final Set<Role> roles;
 
     private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
+
+    @PostConstruct
+    public void init() {
+    }
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, DEFAULT_CALORIES_PER_DAY, true, EnumSet.of(role, roles));

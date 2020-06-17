@@ -13,6 +13,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
 @Service
 public class UserService {
 
+    @Autowired
     private final UserRepository repository;
 
     public UserService(UserRepository repository) {
