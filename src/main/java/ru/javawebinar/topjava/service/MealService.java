@@ -33,8 +33,9 @@ public class MealService {
         return checkNotFoundWithId(repository.get(id, userId), id);
     }
 
-    public List<MealTo> getAll(int userId) {
-        return MealsUtil.getTos(repository.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+    public List<Meal> getAll(int userId) {
+       // return MealsUtil.getTos(repository.getAll(userId), MealsUtil.DEFAULT_CALORIES_PER_DAY);
+        return repository.getAll(userId);
     }
 
     public Meal update(Meal meal, int userId) {

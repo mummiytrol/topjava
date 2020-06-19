@@ -4,12 +4,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.Entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-@SuppressWarnings("SpringJavaConstructorAutowiringInspection")
-@Component
 public class Meal extends AbstractBaseEntity{
     private final LocalDateTime dateTime;
 
