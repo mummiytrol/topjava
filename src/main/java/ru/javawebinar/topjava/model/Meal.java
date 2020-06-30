@@ -9,9 +9,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@NamedQueries({
+        @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
+        @NamedQuery(name = Meal.FILTERED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId " +
+                "AND m.dateTime>=:startDate AND m.dateTime<=:endDate"),
+        @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime"),
+})
+
 @Entity
 @Table(name = "meals")
 public class Meal extends AbstractBaseEntity {
+
+    public static final String DELETE = "Meal.delete";
+    public static final String FILTERED = "Meal.getFiltered";
+    public static final String ALL_SORTED = "Meal.getAllSorted";
 
     @Column (name="date_time", nullable = false)
     @NotNull
@@ -25,8 +36,8 @@ public class Meal extends AbstractBaseEntity {
     @Range(min = 10, max = 10000)
     private int calories;
 
-    @Column(name = "user_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn (name = "user_id")
     private User user;
 
     public Meal() {
