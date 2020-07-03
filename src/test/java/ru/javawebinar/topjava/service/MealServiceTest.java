@@ -14,7 +14,6 @@ import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Date;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -36,109 +35,109 @@ public class MealServiceTest {
 
     @Test
     public void delete() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         service.delete(MEAL1_ID, USER_ID);
         assertThrows(NotFoundException.class, () -> service.get(MEAL1_ID, USER_ID));
-        Date finishTime = new Date();
-        log.info("Test delete. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test delete. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void deleteNotFound() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND, USER_ID));
-        Date finishTime = new Date();
-        log.info("Test deleteNotFound. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test deleteNotFound. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void deleteNotOwn() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         assertThrows(NotFoundException.class, () -> service.delete(MEAL1_ID, ADMIN_ID));
-        Date finishTime = new Date();
-        log.info("Test deleteNotOwn. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test deleteNotOwn. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void create() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         Meal created = service.create(getNew(), USER_ID);
         int newId = created.id();
         Meal newMeal = getNew();
         newMeal.setId(newId);
         MEAL_MATCHER.assertMatch(created, newMeal);
         MEAL_MATCHER.assertMatch(service.get(newId, USER_ID), newMeal);
-        Date finishTime = new Date();
-        log.info("Test create. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test create. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void get() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         Meal actual = service.get(ADMIN_MEAL_ID, ADMIN_ID);
         MEAL_MATCHER.assertMatch(actual, ADMIN_MEAL1);
-        Date finishTime = new Date();
-        log.info("Test get. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test get. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void getNotFound() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND, USER_ID));
-        Date finishTime = new Date();
-        log.info("Test getNotFound. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test getNotFound. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void getNotOwn() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         assertThrows(NotFoundException.class, () -> service.get(MEAL1_ID, ADMIN_ID));
-        Date finishTime = new Date();
-        log.info("Test getNotOwn. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test getNotOwn. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void update() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         Meal updated = getUpdated();
         service.update(updated, USER_ID);
         MEAL_MATCHER.assertMatch(service.get(MEAL1_ID, USER_ID), getUpdated());
-        Date finishTime = new Date();
-        log.info("Test update. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test update. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void updateNotOwn() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         assertThrows(NotFoundException.class, () -> service.update(MEAL1, ADMIN_ID));
-        Date finishTime = new Date();
-        log.info("Test updateNotOwn. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test updateNotOwn. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void getAll() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         MEAL_MATCHER.assertMatch(service.getAll(USER_ID), MEALS);
-        Date finishTime = new Date();
-        log.info("Test getAll. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test getAll. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void getBetweenInclusive() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         MEAL_MATCHER.assertMatch(service.getBetweenInclusive(
                 LocalDate.of(2020, Month.JANUARY, 30),
                 LocalDate.of(2020, Month.JANUARY, 30), USER_ID),
                 MEAL3, MEAL2, MEAL1);
-        Date finishTime = new Date();
-        log.info("Test getBetweenInclusive. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test getBetweenInclusive. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 
     @Test
     public void getBetweenWithNullDates() throws Exception {
-        Date startTime = new Date();
+        long nanoTime = System.nanoTime();
         MEAL_MATCHER.assertMatch(service.getBetweenInclusive(null, null, USER_ID), MEALS);
-        Date finishTime = new Date();
-        log.info("Test getBetweenWithNullDates. Runtime is {} s", finishTime.getTime() - startTime.getTime());
+        nanoTime = System.nanoTime() - nanoTime;
+        log.info("Test getBetweenWithNullDates. Runtime is {} ms", (double) nanoTime/1000000d);
     }
 }

@@ -1,6 +1,5 @@
 package ru.javawebinar.topjava.model;
 
-import org.hibernate.annotations.Proxy;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -14,7 +13,7 @@ import java.time.LocalTime;
 @NamedQueries({
         @NamedQuery(name = Meal.DELETE, query = "DELETE FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
         @NamedQuery(name = Meal.FILTERED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId " +
-                "AND m.dateTime>=:startDate AND m.dateTime<=:endDate ORDER BY m.dateTime DESC"),
+                "AND m.dateTime>=:startDate AND m.dateTime<:endDate ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.ALL_SORTED, query = "SELECT m FROM Meal m WHERE m.user.id=:userId ORDER BY m.dateTime DESC"),
         @NamedQuery(name = Meal.GET, query = "SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:userId"),
 })

@@ -27,11 +27,11 @@ public class JpaMealRepository implements MealRepository {
             em.persist(meal);
             return meal;
         } else {
-            if (meal.getUser().getId() == userId) {
-                return em.merge(meal);
+            if (get(meal.getId(), userId) == null) {
+                return null;
             }
         }
-        return null;
+        return em.merge(meal);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class JpaMealRepository implements MealRepository {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Meal get(int id, int userId) {
         Meal meal = em.find(Meal.class, id);
         if (meal != null && meal.getUser().getId() == userId) {
@@ -55,7 +55,7 @@ public class JpaMealRepository implements MealRepository {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Meal> getAll(int userId) {
         return em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
                 .setParameter("userId", userId)
@@ -63,13 +63,13 @@ public class JpaMealRepository implements MealRepository {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
-        List<Meal> meals = em.createNamedQuery(Meal.ALL_SORTED, Meal.class)
+
+        return em.createNamedQuery(Meal.FILTERED, Meal.class)
                 .setParameter("userId", userId)
+                .setParameter("startDate", startDateTime)
+                .setParameter("endDate", endDateTime)
                 .getResultList();
-        return meals.stream()
-                .filter(meal -> Util.isBetweenHalfOpen(meal.getDateTime(), startDateTime, endDateTime))
-                .collect(Collectors.toList());
     }
 }
