@@ -92,9 +92,13 @@
     </beans>
 
     <beans profile="jdbc">
+        <jpa:repositories base-package="ru.javawebinar.topjava.repository.jdbc"/>
     </beans>
     <beans profile="jpa">
+        <jpa:repositories base-package="ru.javawebinar.topjava.repository.jpa"/>
     </beans>
     <beans profile="datajpa">
+        <jpa:repositories base-package="ru.javawebinar.topjava.repository.datajpa"/>
+
     </beans>
 </beans>
